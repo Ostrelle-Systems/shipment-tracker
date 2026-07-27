@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gotify/server/v2/model"
+	"github.com/rs/zerolog/log"
 )
 
 // The HealthDatabase interface for encapsulating database access.
@@ -33,6 +34,7 @@ type HealthAPI struct {
 //	        $ref: "#/definitions/Health"
 func (a *HealthAPI) Health(ctx *gin.Context) {
 	if err := a.DB.Ping(); err != nil {
+		log.Warn().Err(err).Msg("Health check: database ping failed")
 		ctx.JSON(500, model.Health{
 			Health:   model.StatusOrange,
 			Database: model.StatusRed,
