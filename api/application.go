@@ -94,7 +94,7 @@ func (a *ApplicationAPI) CreateApplication(ctx *gin.Context) {
 	if err := ctx.Bind(&applicationParams); err == nil {
 		tokenPublic, tokenPrivate := generateApplicationToken()
 		app := model.Application{
-			Name:            applicationParams.Name,
+			Name:            strings.TrimSpace(applicationParams.Name),
 			Description:     applicationParams.Description,
 			DefaultPriority: applicationParams.DefaultPriority,
 			SortKey:         applicationParams.SortKey,
@@ -262,7 +262,7 @@ func (a *ApplicationAPI) UpdateApplication(ctx *gin.Context) {
 			applicationParams := ApplicationParams{}
 			if err := ctx.Bind(&applicationParams); err == nil {
 				app.Description = applicationParams.Description
-				app.Name = applicationParams.Name
+				app.Name = strings.TrimSpace(applicationParams.Name)
 				app.DefaultPriority = applicationParams.DefaultPriority
 				if applicationParams.SortKey != "" {
 					app.SortKey = applicationParams.SortKey
