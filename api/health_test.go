@@ -9,6 +9,7 @@ import (
 	"github.com/gotify/server/v2/model"
 	"github.com/gotify/server/v2/test"
 	"github.com/gotify/server/v2/test/testdb"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -40,6 +41,11 @@ func (s *HealthSuite) AfterTest(suiteName, testName string) {
 func (s *HealthSuite) TestHealthSuccess() {
 	s.a.Health(s.ctx)
 	test.BodyEquals(s.T(), model.Health{Health: model.StatusGreen, Database: model.StatusGreen}, s.recorder)
+}
+
+func (s *HealthSuite) TestHealthIsNotCached() {
+	s.a.Health(s.ctx)
+	assert.Equal(s.T(), "no-store", s.recorder.Header().Get("Cache-Control"))
 }
 
 func (s *HealthSuite) TestDatabaseFailure() {
