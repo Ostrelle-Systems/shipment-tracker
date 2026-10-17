@@ -32,6 +32,8 @@ type HealthAPI struct {
 //	    schema:
 //	        $ref: "#/definitions/Health"
 func (a *HealthAPI) Health(ctx *gin.Context) {
+	// Load balancers and proxies must never serve a cached health result
+	ctx.Header("Cache-Control", "no-store")
 	if err := a.DB.Ping(); err != nil {
 		ctx.JSON(500, model.Health{
 			Health:   model.StatusOrange,
