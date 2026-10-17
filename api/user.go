@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -189,7 +190,7 @@ func (a *UserAPI) CreateUser(ctx *gin.Context) {
 	user := model.CreateUserExternal{}
 	if err := ctx.Bind(&user); err == nil {
 		internal := &model.User{
-			Name:  user.Name,
+			Name:  strings.TrimSpace(user.Name),
 			Admin: user.Admin,
 			Pass:  password.CreatePassword(user.Pass, a.PasswordStrength),
 		}
