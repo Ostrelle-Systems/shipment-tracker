@@ -264,7 +264,8 @@ func (a *ClientAPI) DeleteClient(ctx *gin.Context) {
 //
 // Elevate a client session.
 //
-// Requires elevated authentication.
+// Requires elevated authentication. The requested duration must be between 1
+// second and 24 hours (86400 seconds).
 //
 //	---
 //	consumes: [application/json]

@@ -6,11 +6,14 @@ import "time"
 //
 // swagger:model ElevateRequest
 type ElevateRequest struct {
-	// How long the elevation should last, in seconds.
+	// How long the elevation should last, in seconds. Must be between 1 second
+	// and 24 hours (86400 seconds).
 	//
 	// required: true
 	// example: 900
-	DurationSeconds int `form:"durationSeconds" query:"durationSeconds" json:"durationSeconds" binding:"required"`
+	// min: 1
+	// max: 86400
+	DurationSeconds int `form:"durationSeconds" query:"durationSeconds" json:"durationSeconds" binding:"required,min=1,max=86400"`
 }
 
 var DefaultElevationDuration = time.Hour
